@@ -22,6 +22,11 @@ if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
   exit 1
 fi
 
+# Default invalidation path
+if [ -z "$CLOUDFRONT_INVALIDATION_PATH" ]; then
+  CLOUDFRONT_INVALIDATION_PATH="/*"
+fi
+
 # Default to us-east-1 if AWS_REGION not set.
 if [ -z "$AWS_REGION" ]; then
   AWS_REGION="sa-east-1"
@@ -51,7 +56,7 @@ sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} \
               ${ENDPOINT_APPEND} $*"
 
 echo "Invalidating cache on CloudFront distribution '${AWS_CLOUDFRONT_DISTRIBUTION_ID}':"
-sh -c "aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths "\/\*" --profile s3-sync-action"
+sh -c "aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths "${CLOUDFRONT_INVALIDATION_PATH}" --profile s3-sync-action"
 
 # Clear out credentials after we're done.
 # We need to re-run `aws configure` with bogus input instead of
