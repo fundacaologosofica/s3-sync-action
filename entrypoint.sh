@@ -51,7 +51,7 @@ sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} \
               ${ENDPOINT_APPEND} $*"
 
 echo "Invalidating cache on CloudFront distribution '${AWS_CLOUDFRONT_DISTRIBUTION_ID}':"
-sh -c "aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths "*" --profile s3-sync-action"
+sh -c "aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths "\*" --profile s3-sync-action"
 
 # Clear out credentials after we're done.
 # We need to re-run `aws configure` with bogus input instead of
