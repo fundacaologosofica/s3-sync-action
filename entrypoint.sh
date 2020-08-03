@@ -24,7 +24,7 @@ fi
 
 # Default to us-east-1 if AWS_REGION not set.
 if [ -z "$AWS_REGION" ]; then
-  AWS_REGION="us-east-1"
+  AWS_REGION="sa-east-1"
 fi
 
 # Override default AWS endpoint if user sets AWS_S3_ENDPOINT.
