@@ -53,7 +53,10 @@ echo "Sync'ing files with S3 Bucket '${AWS_S3_BUCKET}':"
 sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} \
               --profile s3-sync-action \
               --no-progress \
-              ${ENDPOINT_APPEND} $*"
+              ${ENDPOINT_APPEND} $* \
+              --exclude .git/* \
+              --exclude .github/* \
+              --exclude README.md"
 
 echo "Invalidating cache on CloudFront distribution '${AWS_CLOUDFRONT_DISTRIBUTION_ID}':"
 sh -c "aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths '${CLOUDFRONT_INVALIDATION_PATH}' --profile s3-sync-action"
